@@ -9,6 +9,7 @@ export function useGameActions() {
 
   const startGame = useCallback(() => {
     dispatch({ type: ACTIONS.START_GAME });
+    dispatch({ type: ACTIONS.CHANGE_SCENE, payload: { sceneId: 'rabbit_hole' } });
   }, [dispatch]);
 
   const changeScene = useCallback((sceneId) => {

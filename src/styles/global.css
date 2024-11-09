@@ -51,3 +51,33 @@
     animation-delay: 500ms;
   }
 }
+
+/* 在已有的css基础上添加以下内容 */
+
+@keyframes deathScreen {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-death-screen {
+  animation: deathScreen 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s cubic-bezier(0.36, 0, 0.66, -0.56) infinite;
+}

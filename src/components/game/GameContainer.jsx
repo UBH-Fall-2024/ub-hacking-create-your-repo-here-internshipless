@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useGameState } from '../../context/GameContext';
 import { useGameActions } from '../../hooks/useGameActions';
 import { Button } from '../ui/Button';
 import { Clock, Heart, Book } from 'lucide-react';
 import Scene from './Scene';
 import StatusBar from './StatusBar';
+import DeathScreen from './DeathScreen';
 
 function GameContainer() {
   const gameState = useGameState();
   const { startGame } = useGameActions();
 
-  const handleStartGame = () => {
-    startGame();
-  };
+  // 检查玩家是否死亡
+  const isDead = gameState.player.health <= 0;
 
-  // If game hasn't started, show title screen
+  // 如果游戏未开始，显示标题界面
   if (!gameState.gameProgress.startTime) {
     return (
       <div className="w-full max-w-xl px-4 relative z-10">
@@ -32,7 +32,7 @@ function GameContainer() {
 
         <div className="flex flex-col items-center gap-4 w-full max-w-sm mx-auto">
           <Button 
-            onClick={handleStartGame}
+            onClick={startGame}
             className="w-full h-14 text-lg bg-violet-500 hover:bg-violet-600
                        transition-all duration-300 animate-fade-in delay-300
                        shadow-lg hover:shadow-xl hover:-translate-y-0.5"
@@ -47,15 +47,20 @@ function GameContainer() {
     );
   }
 
-  // Game has started, show current scene
   return (
     <div className="w-full max-w-4xl p-4 relative">
-      {/* Status bar */}
-      <StatusBar />
+      {/* Show death screen if player is dead */}
+      {isDead && <DeathScreen />}
       
-      {/* Main game content */}
-      <div className="mt-4">
-        <Scene />
+      <div className={`transition-all duration-500 
+                      ${isDead ? 'opacity-50 pointer-events-none blur-sm' : ''}`}>
+        {/* Status bar */}
+        <StatusBar />
+        
+        {/* Main game content */}
+        <div className="mt-4">
+          <Scene />
+        </div>
       </div>
     </div>
   );
