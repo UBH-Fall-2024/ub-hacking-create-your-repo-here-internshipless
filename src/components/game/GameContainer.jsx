@@ -3,6 +3,8 @@ import { useGameState } from '../../context/GameContext';
 import { useGameActions } from '../../hooks/useGameActions';
 import { Button } from '../ui/Button';
 import { Clock, Heart, Book } from 'lucide-react';
+import Scene from './Scene';
+import StatusBar from './StatusBar';
 
 function GameContainer() {
   const gameState = useGameState();
@@ -47,8 +49,14 @@ function GameContainer() {
 
   // Game has started, show current scene
   return (
-    <div>
-      {/* Game content will be implemented next */}
+    <div className="w-full max-w-4xl p-4 relative">
+      {/* Status bar */}
+      <StatusBar />
+      
+      {/* Main game content */}
+      <div className="mt-4">
+        <Scene />
+      </div>
     </div>
   );
 }
