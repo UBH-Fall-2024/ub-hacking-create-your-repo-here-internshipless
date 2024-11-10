@@ -23,6 +23,20 @@ export const items = {
             },
             usable: true,
             consumable: false
-        }
+        },
+        health_potion: {
+            id: 'health_potion',
+            name: 'Health Potion',
+            description: 'A magical potion that restores health.',
+            icon: '🧪',
+            type: 'consumable',
+            usable: true,
+            consumable: true,
+            stackable: true,
+            maxStack: 99,
+            effects: {
+              health: 30
+            }
+          }
         //...more items
     }

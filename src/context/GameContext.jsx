@@ -45,18 +45,29 @@ function gameReducer(state, action) {
         }
       };
 
-    case ACTIONS.ADD_ITEM:
-      return {
-        ...state,
-        player: {
-          ...state.player,
-          inventory: [...state.player.inventory, action.payload.itemId]
-        },
-        statistics: {
-          ...state.statistics,
-          itemsCollected: state.statistics.itemsCollected + 1
+      case ACTIONS.ADD_ITEM: {
+        const item = items[action.payload.itemId];
+        const currentInventory = { ...state.player.inventory };
+        
+        if (item.stackable) {
+          const currentAmount = currentInventory[action.payload.itemId] || 0;
+          const newAmount = Math.min(
+            currentAmount + (action.payload.amount || 1),
+            item.maxStack
+          );
+          currentInventory[action.payload.itemId] = newAmount;
+        } else {
+          currentInventory[action.payload.itemId] = 1;
         }
-      };
+  
+        return {
+          ...state,
+          player: {
+            ...state.player,
+            inventory: currentInventory
+          }
+        };
+      }
 
     case ACTIONS.UPDATE_HEALTH:
       const newHealth = Math.max(0, Math.min(100, state.player.health + action.payload.amount));
@@ -87,11 +98,11 @@ function gameReducer(state, action) {
         const item = items[action.payload.itemId];
         if (!item) return state;
   
-        // 应用物品效果
+        // apply item effects
         const newState = { ...state };
         
         if (item.effects) {
-          // 处理生命值效果
+          // Health effects
           if (item.effects.health) {
             newState.player.health = Math.min(
               100,
@@ -99,7 +110,7 @@ function gameReducer(state, action) {
             );
           }
           
-          // 处理技能效果
+          // Skill effects
           if (item.effects.skills) {
             newState.player.skills = [
               ...new Set([...state.player.skills, ...item.effects.skills])
@@ -107,7 +118,7 @@ function gameReducer(state, action) {
           }
         }
   
-        // 如果物品是消耗品，使用后移除
+        // If consumable, remove from inventory
         if (item.consumable) {
           newState.player.inventory = state.player.inventory.filter(
             id => id !== action.payload.itemId

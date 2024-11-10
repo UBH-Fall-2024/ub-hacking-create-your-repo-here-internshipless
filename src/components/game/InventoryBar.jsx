@@ -43,6 +43,13 @@ function InventoryBar() {
     setTimeout(() => setEffectMessage(null), 3000);
   };
 
+  const inventoryItems = Object.keys(player.inventory).map(itemId => ({
+    id: itemId,
+    amount: player.inventory[itemId],
+    ...items[itemId]
+  }));
+
+  
   return (
     <div className="mt-4">
       {/* Inventory Header */}
@@ -61,14 +68,13 @@ function InventoryBar() {
           </div>
         ) : (
           <div className="grid grid-cols-4 gap-4">
-            {player.inventory.map(itemId => {
-              const item = items[itemId];
-              const isSelected = selectedItem === itemId;
+            {inventoryItems.map((item) => {
+                const isSelected = selectedItem === item.id;
 
               return (
                 <div
-                  key={itemId}
-                  onClick={() => handleItemClick(itemId)}
+                  key={item.id}
+                  onClick={() => handleItemClick(item.id)}
                   className={`relative p-4 rounded-lg cursor-pointer
                              transition-all duration-300 
                              ${isSelected 
@@ -82,7 +88,14 @@ function InventoryBar() {
                       {item.name}
                     </div>
                   </div>
-
+                {/* Stacked items */}
+                {item.amount > 1 && (
+                      <div className="absolute top-1 right-1 bg-purple-600 
+                                    text-white text-xs rounded-full w-5 h-5 
+                                    flex items-center justify-center">
+                        {item.amount}
+                      </div>
+                    )}
                   {/* Item Details */}
                   {isSelected && (
                     <div className="absolute left-0 top-full mt-2 p-4 
@@ -114,7 +127,7 @@ function InventoryBar() {
                           <Button
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleUseItem(itemId);
+                              handleUseItem(item.id);
                             }}
                             className="flex-1 bg-purple-600 hover:bg-purple-700"
                           >
