@@ -26,7 +26,7 @@ export const scenes = [
     {
       id: 'falling',
       title: 'The Long Fall',
-      description: "You're falling down what seems to be an impossibly deep hole. Strange objects float past you: books, teacups, maps, and paintings. The walls are lined with cupboards and bookshelves.",
+      description: "You're falling down what seems to be an impossibly deep hole. Strange objects float past you: books, teacups, maps, and paintings. The walls are lined with cupboards and bookshelves.'",
       background: 'falling_bg',
       choices: [
         {
@@ -38,16 +38,16 @@ export const scenes = [
         },
         {
           text: 'Try to slow your fall by grabbing the walls',
-          nextScene: 'slow_fall',
+          nextScene: 'TBC',
           effect: {
             health: -10
           }
         },
         {
           text: 'Let yourself fall freely',
-          nextScene: 'bottom_hall',
+          nextScene: 'TBC',
           requirements: {
-            health: 50
+            health: 100
           }
         }
       ]
@@ -67,9 +67,31 @@ export const scenes = [
         },
         {
           text: 'Return to the garden path',
-          nextScene: 'garden_path',
+          nextScene: 'TBC',
           effect: {
             health: 5
+          }
+        }
+      ]
+    },
+  {
+    id: 'TBC',
+      title: 'To Be Continued',
+      description: 'To Be Continued',
+      background: 'To Be Continued',
+      choices: [
+        {
+          text: 'To Be Continued',
+          nextScene: 'TBC',
+          effect: {
+            health:0
+          }
+        },
+        {
+          text: 'To Be Continued',
+          nextScene: 'TBC',
+          effect: {
+            health: 0
           }
         }
       ]
