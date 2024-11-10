@@ -17,11 +17,7 @@ export const items = {
             usable: true,
             consumable: true,
             icon : '📚',
-            effects: {
-                language_skill: 15,
-                wisdom: 5
-            },
-            usable: true,
+            usable: false,
             consumable: false
         },
         health_potion: {
