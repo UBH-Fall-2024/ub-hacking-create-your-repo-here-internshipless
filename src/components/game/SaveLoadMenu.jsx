@@ -12,7 +12,7 @@ function SaveLoadMenu({ onClose }) {
 
   const handleLoad = (save) => {
     try {
-      if (save && save.gameState && save.gameState.gameProgress) {
+      if (save && save.gameState) {
         loadGameState(save.gameState);
         onClose();
       }

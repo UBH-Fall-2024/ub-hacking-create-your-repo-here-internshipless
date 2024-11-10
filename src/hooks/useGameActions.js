@@ -111,6 +111,13 @@ export function useGameActions() {
     });
   }, [dispatch]);
 
+  const loadGameState = useCallback((savedState) => {
+    dispatch({
+      type: ACTIONS.LOAD_GAME_STATE,
+      payload: { gameState: savedState }
+    });
+  }, [dispatch]);
+
   return {
     startGame,
     changeScene,
@@ -124,5 +131,6 @@ export function useGameActions() {
     spendGold,
     addNotification,
     removeNotification,
+    loadGameState,
   };
 }
