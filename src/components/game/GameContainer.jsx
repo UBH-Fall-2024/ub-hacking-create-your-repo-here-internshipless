@@ -9,6 +9,7 @@ import DeathScreen from './DeathScreen';
 import { useState } from 'react';
 import SaveLoadMenu from './SaveLoadMenu';
 import { saveManager } from '../../utils/saveManager';
+import InventoryBar from './InventoryBar';
 
 const ConfirmDialog = ({ message, onConfirm, onCancel }) => (
   <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50
@@ -149,6 +150,7 @@ function GameContainer() {
         <div className="mt-4">
           <Scene />
         </div>
+        <InventoryBar />
       </div>
     </div>
   );

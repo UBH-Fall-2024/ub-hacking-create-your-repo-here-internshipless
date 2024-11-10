@@ -37,39 +37,43 @@ function Scene() {
   if (!currentScene) return null;
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
-      {/* Scene Content */}
-      <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-xl p-8 animate-fade-in">
-        <h2 className="text-3xl font-bold text-wonderland-primary mb-4">
-          {currentScene.title}
-        </h2>
-        
-        <p className="text-lg text-purple-800 leading-relaxed mb-8">
-          {currentScene.description}
-        </p>
+    <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-xl p-8 animate-fade-in">
+      {/* Scene Title */}
+      <h2 className="text-3xl font-bold text-wonderland-primary mb-4">
+        {currentScene.title}
+      </h2>
+      
+      {/* Scene Description */}
+      <p className="text-lg text-purple-800 leading-relaxed mb-8">
+        {currentScene.description}
+      </p>
 
-        {/* Choices */}
-        <div className="space-y-4">
-          {currentScene.choices.map((choice, index) => (
+      {/* Choices */}
+      <div className="space-y-4">
+        {currentScene.choices.map((choice, index) => {
+          const isDisabled = choice.requirements && !meetsRequirements(choice.requirements, gameState);
+          
+          return (
             <Button
               key={index}
               onClick={() => handleChoice(choice)}
-              className="w-full text-left p-4 hover:translate-x-1
-                         transition-all duration-300 bg-purple-50 
-                         hover:bg-purple-100 text-purple-800
-                         flex items-center justify-between group"
-              disabled={
-                choice.requirements &&
-                !meetsRequirements(choice.requirements, gameState)
-              }
+              disabled={isDisabled}
+              className={`w-full text-left p-4 transition-all duration-300
+                         flex items-center justify-between group
+                         ${isDisabled 
+                           ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                           : 'bg-purple-50 hover:bg-purple-100 text-purple-800 hover:translate-x-1'
+                         }`}
             >
               <span>{choice.text}</span>
-              <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                →
-              </span>
+              {!isDisabled && (
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  →
+                </span>
+              )}
             </Button>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   );
