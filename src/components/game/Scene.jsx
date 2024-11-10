@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useGameState } from '../../context/GameContext';
 import { useGameActions } from '../../hooks/useGameActions';
 import { scenes } from '../../data/scenes';
 import { Button } from '../ui/Button';
+import { saveManager } from '../../utils/saveManager';
 
 function Scene() {
   const gameState = useGameState();
@@ -12,6 +13,11 @@ function Scene() {
   const currentScene = scenes.find(
     scene => scene.id === gameState.gameProgress.currentScene
   );
+
+  // auto-save
+  useEffect(() => {
+    saveManager.autoSave(gameState);
+  }, [gameState]);
 
   // Handle player choice
   const handleChoice = (choice) => {

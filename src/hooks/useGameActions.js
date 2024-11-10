@@ -43,10 +43,19 @@ export function useGameActions() {
     });
   }, [dispatch]);
 
+  const localGameState = useCallback((savedState) => {
+    dispatch({
+      type: ACTIONS.LOAD_GAME_STATE,
+      payload: { gameState:savedState }
+    });
+  }, [dispatch]);
+
+
   return {
     startGame,
     changeScene,
     addItem,
-    updateHealth
+    updateHealth,
+    localGameState
   };
 }

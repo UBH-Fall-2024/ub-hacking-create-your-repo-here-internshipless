@@ -13,7 +13,8 @@ export const ACTIONS = {
   USE_ITEM: 'USE_ITEM',
   UPDATE_HEALTH: 'UPDATE_HEALTH',
   UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT',
-  ADD_SKILL: 'ADD_SKILL'
+  ADD_SKILL: 'ADD_SKILL',
+  LOAD_GAME_STATE: 'LOAD_GAME_STATE'
 };
 
 // Game reducer
@@ -80,6 +81,14 @@ function gameReducer(state, action) {
         }
       };
 
+      case ACTIONS.LOAD_GAME_STATE:
+      return {
+        ...action.payload.gameState,
+        gameProgress: {
+          ...action.payload.gameState.gameProgress,
+          lastLoaded: Date.now()
+        }
+      };
     default:
       return state;
   }
