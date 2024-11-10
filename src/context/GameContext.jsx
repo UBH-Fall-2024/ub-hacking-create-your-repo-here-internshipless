@@ -16,7 +16,8 @@ export const ACTIONS = {
   UPDATE_HEALTH: 'UPDATE_HEALTH',
   UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT',
   ADD_SKILL: 'ADD_SKILL',
-  LOAD_GAME_STATE: 'LOAD_GAME_STATE'
+  LOAD_GAME_STATE: 'LOAD_GAME_STATE',
+  UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT'
 };
 
 // Game reducer
@@ -139,6 +140,23 @@ function gameReducer(state, action) {
           }
         };
 
+        case ACTIONS.UNLOCK_ACHIEVEMENT: {
+          if (state.gameProgress.unlockedAchievements.includes(action.payload.achievementId)) {
+            return state;
+          }
+          
+          return {
+            ...state,
+            gameProgress: {
+              ...state.gameProgress,
+              unlockedAchievements: [
+                ...state.gameProgress.unlockedAchievements,
+                action.payload.achievementId
+              ]
+            }
+          };
+        }
+        
     default:
       return state;
   }

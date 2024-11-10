@@ -8,17 +8,39 @@ export const achievements = {
             requirements: {
                 scene: 'falling',
                 action: 'enter'
-            }
+            },
+            icon: '🐇',
         },
         collector: {
             id: 'collector',
             name: 'Collector',
             description: 'Collect more than 10 items',
-            icon: 'chest_icon',
+            icon: '📦',
             requirements: {
                 items: 10,
                 type: 'count'
             }
-        }
+        },
+        healer: {
+            id: 'healer',
+            name: 'Healer',
+            description: 'Use the healing potion',
+            icon: '🧪',
+            requirements: {
+                item: 'healing_potion',
+                action: 'use'
+            }
+        },
+        explorer: {
+            id: 'explorer',
+            name: 'Explorer',
+            description: 'Visit 5 different scenes',
+            icon: '🗺️',
+            requirements: {
+                scenes: 5,
+                type: 'count'
+            }
+        },
+
     }
     //... more achievements

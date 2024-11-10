@@ -10,6 +10,9 @@ import { useState } from 'react';
 import SaveLoadMenu from './SaveLoadMenu';
 import { saveManager } from '../../utils/saveManager';
 import InventoryBar from './InventoryBar';
+import { Trophy } from 'lucide-react';
+import AchievementsPanel from './AchievementsPanel';
+
 
 const ConfirmDialog = ({ message, onConfirm, onCancel }) => (
   <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50
@@ -43,7 +46,8 @@ function GameContainer() {
   const gameState = useGameState();
   const { startGame } = useGameActions();
   const [showExitConfirm, setShowExitConfirm] = useState(false);
-
+  const [showAchievements, setShowAchievements] = useState(false);
+  
   const handleSaveAndExit = () => {
     setShowSaveMenu(true);
   };
@@ -144,8 +148,19 @@ function GameContainer() {
           >
             <Home className="h-5 w-5" />
           </Button>
-        </div>
 
+          <Button
+            onClick={() => setShowAchievements(true)}
+            className="bg-yellow-500 hover:bg-yellow-600 transition-all
+                      shadow-lg hover:shadow-xl"
+            title="Achievements"
+          >
+            <Trophy className="h-5 w-5" />
+          </Button>
+        </div>
+        {showAchievements && (
+          <AchievementsPanel onClose={() => setShowAchievements(false)} />
+        )}
         <StatusBar />
         <div className="mt-4">
           <Scene />

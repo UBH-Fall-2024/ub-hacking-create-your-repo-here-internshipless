@@ -64,6 +64,13 @@ export function useGameActions() {
     });
   }, [dispatch]);
 
+  const unlockAchievement = useCallback((achievementId) => {
+    dispatch({
+      type: ACTIONS.UNLOCK_ACHIEVEMENT,
+      payload: { achievementId }
+    });
+  }, [dispatch]);
+
   return {
     startGame,
     changeScene,
@@ -71,6 +78,7 @@ export function useGameActions() {
     updateHealth,
     localGameState,
     useItem,
-    removeItem
+    removeItem,
+    unlockAchievement
   };
 }
