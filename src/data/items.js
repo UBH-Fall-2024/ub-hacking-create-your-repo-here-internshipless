@@ -33,6 +33,21 @@ export const items = {
             effects: {
               health: 30
             }
-          }
+          },
+          mushroom: {
+            id: 'mushroom',
+            name: 'Magic Mushroom',
+            description: 'A colorful mushroom with magical properties.',
+            icon: '🍄',
+            type: 'consumable',
+            usable: true,
+            consumable: true,
+            stackable: true,
+            maxStack: 99,
+            effects: {
+              random: true,
+              type: 'size',
+            }
+          },
         //...more items
     }
