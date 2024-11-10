@@ -103,6 +103,7 @@ function gameReducer(state, action) {
   
         // apply item effects
         const newState = { ...state };
+        const currentInventory = { ...state.player.inventory };
         
         if (item.effects) {
           // Health effects
@@ -123,11 +124,14 @@ function gameReducer(state, action) {
   
         // If consumable, remove from inventory
         if (item.consumable) {
-          newState.player.inventory = state.player.inventory.filter(
-            id => id !== action.payload.itemId
-          );
+          if(currentInventory[action.payload.itemId] > 1) {
+            currentInventory[action.payload.itemId] -= 1;
+          } else {
+            delete currentInventory[action.payload.itemId];
+          }
         }
   
+        newState.player.inventory = currentInventory;
         return newState;
       }
   
