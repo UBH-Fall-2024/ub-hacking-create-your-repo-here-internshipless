@@ -106,13 +106,6 @@ export function useGameActions() {
     });
   }, [dispatch]);
 
-  const unlockAchievement = useCallback((achievementId) => {
-    dispatch({
-      type: ACTIONS.UNLOCK_ACHIEVEMENT,
-      payload: { achievementId }
-    });
-  }, [dispatch]);
-
   const addGold = useCallback((amount) => {
     dispatch({
       type: ACTIONS.ADD_GOLD,
@@ -166,7 +159,6 @@ export function useGameActions() {
     localGameState,
     useItem,
     removeItem,
-    unlockAchievement,
     addGold,
     spendGold,
     addNotification,

@@ -17,6 +17,7 @@ import Shop from './shop';
 import { Package } from 'lucide-react';
 import ItemNotification from './ItemNotification';
 import { items } from '../../data/items';
+import { useAchievements } from '../../hooks/useAchievements';
 
 const ConfirmDialog = ({ message, onConfirm, onCancel }) => (
   <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50
@@ -48,7 +49,7 @@ const ConfirmDialog = ({ message, onConfirm, onCancel }) => (
 function GameContainer() {
   const [showSaveMenu, setShowSaveMenu] = useState(false);
   const gameState = useGameState();
-  const { startGame } = useGameActions();
+  const { startGame, checkAchievements } = useGameActions();
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
   const [showShop, setShowShop] = useState(false);
@@ -76,6 +77,22 @@ function GameContainer() {
     }
   };
 
+
+  //check achievements
+  useEffect(() => {
+    if (gameState && checkAchievements) {
+      checkAchievements(
+        gameState.player.inventory,
+        gameState.gameProgress.visitedScenes,
+        gameState.gameProgress.usedItems,
+        gameState.gameProgress.unlockedAchievements
+      );
+    }
+  }, [
+    gameState.player.inventory,
+    gameState.gameProgress.visitedScenes,
+    gameState.gameProgress.usedItems
+  ]);
   // Check if player is dead
   const isDead = gameState.player.health <= 0;
 

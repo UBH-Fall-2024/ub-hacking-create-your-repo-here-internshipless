@@ -7,25 +7,21 @@ function AchievementsPanel({ onClose }) {
   const { gameProgress, player } = useGameState();
   const achievementsList = Object.values(achievements);
 
-  // 检查成就是否完成
   const isAchievementComplete = (achievement) => {
     if (!achievement.requirements) return false;
-
+  
     switch (true) {
-      // 场景相关成就
       case !!achievement.requirements.scene:
         return gameProgress.visitedScenes.includes(achievement.requirements.scene);
       
-      // 物品数量成就
       case achievement.requirements.type === 'count' && !!achievement.requirements.items:
-        return Object.values(player.inventory).reduce((sum, amount) => sum + amount, 0) >= 
-               achievement.requirements.items;
+        const totalItems = Object.values(player.inventory)
+          .reduce((sum, amount) => sum + amount, 0);
+        return totalItems >= achievement.requirements.items;
       
-      // 场景数量成就
       case achievement.requirements.type === 'count' && !!achievement.requirements.scenes:
         return gameProgress.visitedScenes.length >= achievement.requirements.scenes;
       
-      // 使用物品成就
       case !!achievement.requirements.item && achievement.requirements.action === 'use':
         return gameProgress.usedItems?.includes(achievement.requirements.item);
       
@@ -33,6 +29,12 @@ function AchievementsPanel({ onClose }) {
         return false;
     }
   };
+
+  // check if achievement is complete
+  const completedAchievements = achievementsList.filter(achievement => 
+    isAchievementComplete(achievement, player.inventory, 
+      gameProgress.visitedScenes, gameProgress.usedItems)
+  ).length;
 
   // 获取成就进度
   const getAchievementProgress = (achievement) => {
@@ -60,7 +62,7 @@ function AchievementsPanel({ onClose }) {
           <h2 className="text-2xl font-bold text-purple-800">
             Achievements
             <span className="ml-2 text-lg text-purple-600">
-              ({gameProgress.unlockedAchievements.length}/{achievementsList.length})
+              ({completedAchievements}/{achievementsList.length})
             </span>
           </h2>
           <button
