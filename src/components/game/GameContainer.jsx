@@ -48,7 +48,7 @@ const ConfirmDialog = ({ message, onConfirm, onCancel }) => (
 function GameContainer() {
   const [showSaveMenu, setShowSaveMenu] = useState(false);
   const gameState = useGameState();
-  const { startGame } = useGameActions();
+  const { startGame, checkAchievements } = useGameActions();
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
   const [showShop, setShowShop] = useState(false);
@@ -76,6 +76,22 @@ function GameContainer() {
     }
   };
 
+
+  //check achievements
+  useEffect(() => {
+    if (gameState && checkAchievements) {
+      checkAchievements(
+        gameState.player.inventory,
+        gameState.gameProgress.visitedScenes,
+        gameState.gameProgress.usedItems,
+        gameState.gameProgress.unlockedAchievements
+      );
+    }
+  }, [
+    gameState.player.inventory,
+    gameState.gameProgress.visitedScenes,
+    gameState.gameProgress.usedItems
+  ]);
   // Check if player is dead
   const isDead = gameState.player.health <= 0;
 
@@ -203,17 +219,29 @@ function GameContainer() {
           <InventoryBar onClose={() => setShowInventory(false)} />
         )}
          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 
-              flex flex-col gap-2 z-50">
-            {gameState.notifications?.map(notification => (
-              console.log('notification', notification),
-              <ItemNotification
-                key={notification.id}
-                id={notification.id}
-                item={items[notification.itemId]}
-                onClose={() => handleCloseNotification(notification.id)}
-              />
-            ))}
-          </div>
+                  flex flex-col gap-2 z-50">
+      {gameState.notifications?.map(notification => {
+        if (notification.type === 'item') {
+          return (
+            <ItemNotification
+              key={notification.id}
+              item={items[notification.itemId]}
+              onClose={() => removeNotification(notification.id)}
+            />
+          );
+        } else if (notification.type === 'effect') {
+          return (
+            <EffectNotification
+              key={notification.id}
+              message={notification.message}
+              effectType={notification.effectType}
+              onClose={() => removeNotification(notification.id)}
+            />
+          );
+        }
+        return null;
+      })}
+        </div>
 
         <div className="mt-4">
           <Scene />

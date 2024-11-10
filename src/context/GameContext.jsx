@@ -14,7 +14,6 @@ export const ACTIONS = {
   USE_ITEM: 'USE_ITEM',
   REMOVE_ITEM: 'REMOVE_ITEM',
   UPDATE_HEALTH: 'UPDATE_HEALTH',
-  UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT',
   ADD_SKILL: 'ADD_SKILL',
   LOAD_GAME_STATE: 'LOAD_GAME_STATE',
   UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT',
@@ -224,6 +223,8 @@ function gameReducer(state, action) {
 // Provider component
 export function GameProvider({ children }) {
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
+
+  const getState = () => state;
 
   return (
     <GameContext.Provider value={state}>
