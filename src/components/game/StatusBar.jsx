@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGameState } from '../../context/GameContext';
-import { Heart, Clock, Star } from 'lucide-react';
+import { Heart, Clock, Coins } from 'lucide-react';
 
 function StatusBar() {
   const { player, gameProgress } = useGameState();
@@ -36,9 +36,9 @@ function StatusBar() {
 
         {/* Achievements */}
         <div className="flex items-center gap-1">
-          <Star className="w-5 h-5 text-yellow-500" />
+          <Coins className="w-5 h-5 text-yellow-500" />
           <span className="text-sm font-medium text-gray-700">
-            Achievements: {gameProgress.unlockedAchievements.length}
+            {player.gold} Gold
           </span>
         </div>
       </div>

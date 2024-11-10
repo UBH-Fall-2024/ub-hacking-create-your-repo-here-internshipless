@@ -71,6 +71,20 @@ export function useGameActions() {
     });
   }, [dispatch]);
 
+  const addGold = useCallback((amount) => {
+    dispatch({
+      type: ACTIONS.ADD_GOLD,
+      payload: { amount }
+    });
+  }, [dispatch]);
+
+  const spendGold = useCallback((amount) => {
+    dispatch({
+      type: ACTIONS.SPEND_GOLD,
+      payload: { amount }
+    });
+  }, [dispatch]);
+
   return {
     startGame,
     changeScene,
@@ -79,6 +93,8 @@ export function useGameActions() {
     localGameState,
     useItem,
     removeItem,
-    unlockAchievement
+    unlockAchievement,
+    addGold,
+    spendGold,
   };
 }

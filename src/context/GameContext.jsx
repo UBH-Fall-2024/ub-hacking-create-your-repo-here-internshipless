@@ -17,7 +17,9 @@ export const ACTIONS = {
   UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT',
   ADD_SKILL: 'ADD_SKILL',
   LOAD_GAME_STATE: 'LOAD_GAME_STATE',
-  UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT'
+  UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT',
+  ADD_GOLD: 'ADD_GOLD',
+  SPEND_GOLD: 'SPEND_GOLD'
 };
 
 // Game reducer
@@ -156,6 +158,27 @@ function gameReducer(state, action) {
             }
           };
         }
+
+        case ACTIONS.ADD_GOLD:
+          return {
+            ...state,
+            player: {
+              ...state.player,
+              gold: state.player.gold + action.payload.amount
+            }
+          };
+    
+        case ACTIONS.SPEND_GOLD:
+          if (state.player.gold < action.payload.amount) {
+            return state; // 金币不足
+          }
+          return {
+            ...state,
+            player: {
+              ...state.player,
+              gold: state.player.gold - action.payload.amount
+            }
+          };
         
     default:
       return state;

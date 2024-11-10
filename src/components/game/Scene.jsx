@@ -7,7 +7,7 @@ import { saveManager } from '../../utils/saveManager';
 
 function Scene() {
   const gameState = useGameState();
-  const { changeScene, updateHealth, addItem } = useGameActions();
+  const { changeScene, updateHealth, addItem, addGold } = useGameActions();
 
   // Get current scene data
   const currentScene = scenes.find(
@@ -30,6 +30,8 @@ function Scene() {
         choice.effect.items.forEach(itemId => addItem(itemId));
       }
     }
+    // get gold from choice
+    addGold(1);
     // Change to next scene
     changeScene(choice.nextScene);
   };

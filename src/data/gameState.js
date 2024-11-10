@@ -4,7 +4,8 @@ export const initialGameState = {
       health: 100,
       inventory: [],
       skills: [],
-      achievements: []
+      achievements: [],
+      gold: 0,
     },
     
     gameProgress: {
@@ -21,12 +22,3 @@ export const initialGameState = {
     }
   }
   
-  // Game state types
-  export const GAME_ACTIONS = {
-    MOVE_TO_SCENE: 'MOVE_TO_SCENE',
-    COLLECT_ITEM: 'COLLECT_ITEM',
-    USE_ITEM: 'USE_ITEM',
-    UPDATE_HEALTH: 'UPDATE_HEALTH',
-    UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT',
-    LEARN_SKILL: 'LEARN_SKILL'
-  }

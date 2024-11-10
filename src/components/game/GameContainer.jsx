@@ -12,7 +12,8 @@ import { saveManager } from '../../utils/saveManager';
 import InventoryBar from './InventoryBar';
 import { Trophy } from 'lucide-react';
 import AchievementsPanel from './AchievementsPanel';
-
+import { Store } from 'lucide-react';
+import Shop from './shop';
 
 const ConfirmDialog = ({ message, onConfirm, onCancel }) => (
   <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50
@@ -47,7 +48,8 @@ function GameContainer() {
   const { startGame } = useGameActions();
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
-  
+  const [showShop, setShowShop] = useState(false);
+
   const handleSaveAndExit = () => {
     setShowSaveMenu(true);
   };
@@ -63,10 +65,10 @@ function GameContainer() {
     }
   };
 
-  // 检查玩家是否死亡
+  // Check if player is dead
   const isDead = gameState.player.health <= 0;
 
-  // 如果游戏未开始，显示标题界面
+  // If game is not started yet
   if (!gameState.gameProgress.startTime) {
     return (
       <div className="w-full max-w-xl px-4 relative z-10">
@@ -131,6 +133,15 @@ function GameContainer() {
       <div className={`transition-all duration-500 
                     ${isDead ? 'opacity-50 pointer-events-none blur-sm' : ''}`}>
         <div className="flex justify-end gap-2 mb-4">
+        <Button
+          onClick={() => setShowShop(true)}
+          className="bg-yellow-500 hover:bg-yellow-600 transition-all
+                    shadow-lg hover:shadow-xl"
+          title="Shop"
+        >
+          <Store className="h-5 w-5" />
+        </Button>
+
           <Button
             onClick={() => setShowSaveMenu(true)}
             className="bg-purple-600 hover:bg-purple-700 transition-all
@@ -161,7 +172,12 @@ function GameContainer() {
         {showAchievements && (
           <AchievementsPanel onClose={() => setShowAchievements(false)} />
         )}
+
+        {showShop && (
+          <Shop onClose={() => setShowShop(false)} />
+        )}
         <StatusBar />
+
         <div className="mt-4">
           <Scene />
         </div>
