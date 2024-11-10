@@ -13,10 +13,11 @@ export function useGameActions() {
   }, [dispatch]);
 
   const changeScene = useCallback((sceneId) => {
-    if (!scenes[sceneId]) {
+    const targetScene = scenes.find(scene => scene.id === sceneId);
+    if (!targetScene) {
       console.error(`Scene ${sceneId} not found`);
       return;
-    }
+  }
     
     dispatch({ 
       type: ACTIONS.CHANGE_SCENE, 
