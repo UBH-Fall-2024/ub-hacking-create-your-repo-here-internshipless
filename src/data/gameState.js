@@ -19,6 +19,7 @@ export const initialGameState = {
       choicesMade: 0,
       itemsCollected: 0,
       healthLost: 0
-    }
+    },
+    notifications: []
   }
   

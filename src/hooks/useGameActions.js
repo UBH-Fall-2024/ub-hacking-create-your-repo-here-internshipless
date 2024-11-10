@@ -35,6 +35,7 @@ export function useGameActions() {
       type: ACTIONS.ADD_ITEM,
       payload: { itemId }
     });
+    addNotification(itemId);
   }, [dispatch]);
 
   const updateHealth = useCallback((amount) => {
@@ -86,6 +87,30 @@ export function useGameActions() {
     });
   }, [dispatch]);
 
+  const addNotification = useCallback((itemId) => {
+    const notificationId = Date.now() + Math.random();
+    console.log('addNotification', notificationId);
+    dispatch({
+      type: ACTIONS.ADD_NOTIFICATION,
+      payload: { id: notificationId, itemId }
+    });
+
+    setTimeout(() => {
+      dispatch({
+        type: ACTIONS.REMOVE_NOTIFICATION,
+        payload: { id: notificationId }
+      });
+    },3000);
+  }, [dispatch]);
+
+  const removeNotification = useCallback((id) => {
+    console.log('Dispatching remove notification for id:', id);
+    dispatch({
+      type: ACTIONS.REMOVE_NOTIFICATION,
+      payload: { id }
+    });
+  }, [dispatch]);
+
   return {
     startGame,
     changeScene,
@@ -97,5 +122,7 @@ export function useGameActions() {
     unlockAchievement,
     addGold,
     spendGold,
+    addNotification,
+    removeNotification,
   };
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useGameState } from '../../context/GameContext';
 import { useGameActions } from '../../hooks/useGameActions';
 import { Button } from '../ui/Button';
@@ -15,6 +15,8 @@ import AchievementsPanel from './AchievementsPanel';
 import { Store } from 'lucide-react';
 import Shop from './shop';
 import { Package } from 'lucide-react';
+import ItemNotification from './ItemNotification';
+import { items } from '../../data/items';
 
 const ConfirmDialog = ({ message, onConfirm, onCancel }) => (
   <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50
@@ -51,7 +53,13 @@ function GameContainer() {
   const [showAchievements, setShowAchievements] = useState(false);
   const [showShop, setShowShop] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
+  const { removeNotification } = useGameActions();
 
+
+  const handleCloseNotification =  useCallback((id) => {
+    console.log('Closing notification:', id);
+    removeNotification(id);
+  }, [removeNotification]);
 
   const handleSaveAndExit = () => {
     setShowSaveMenu(true);
@@ -194,6 +202,18 @@ function GameContainer() {
         {showInventory && (
           <InventoryBar onClose={() => setShowInventory(false)} />
         )}
+         <div className="fixed bottom-4 left-1/2 -translate-x-1/2 
+              flex flex-col gap-2 z-50">
+            {gameState.notifications?.map(notification => (
+              console.log('notification', notification),
+              <ItemNotification
+                key={notification.id}
+                id={notification.id}
+                item={items[notification.itemId]}
+                onClose={() => handleCloseNotification(notification.id)}
+              />
+            ))}
+          </div>
 
         <div className="mt-4">
           <Scene />

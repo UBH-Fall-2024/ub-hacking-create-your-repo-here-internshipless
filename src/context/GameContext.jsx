@@ -19,7 +19,9 @@ export const ACTIONS = {
   LOAD_GAME_STATE: 'LOAD_GAME_STATE',
   UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT',
   ADD_GOLD: 'ADD_GOLD',
-  SPEND_GOLD: 'SPEND_GOLD'
+  SPEND_GOLD: 'SPEND_GOLD',
+  ADD_NOTIFICATION: 'ADD_NOTIFICATION',
+  REMOVE_NOTIFICATION: 'REMOVE_NOTIFICATION',
 };
 
 // Game reducer
@@ -182,6 +184,20 @@ function gameReducer(state, action) {
               ...state.player,
               gold: state.player.gold - action.payload.amount
             }
+          };
+
+        case ACTIONS.ADD_NOTIFICATION:
+          return {
+            ...state,
+            notifications: [...state.notifications, action.payload]
+          };
+
+        case ACTIONS.REMOVE_NOTIFICATION:
+          return {
+            ...state,
+              notifications: state.notifications.filter(
+                notification => notification.id !== action.payload.id
+              )
           };
         
     default:
