@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGameState } from '../../context/GameContext';
 import { useGameActions } from '../../hooks/useGameActions';
 import { scenes } from '../../data/scenes';
 import { Button } from '../ui/Button';
 import { saveManager } from '../../utils/saveManager';
+import StatusEffect from './StatusEffect';
 
 function Scene() {
   const gameState = useGameState();
@@ -27,7 +28,8 @@ function Scene() {
         updateHealth(choice.effect.health);
       }
       if (choice.effect.items) {
-        choice.effect.items.forEach(itemId => addItem(itemId));
+        choice.effect.items.forEach(itemId => 
+          addItem(itemId));
       }
     }
     // get gold from choice
@@ -36,10 +38,35 @@ function Scene() {
     changeScene(choice.nextScene);
   };
 
+  const calculateTimeLeft = (endTime) => {
+    if(!endTime) return 0;
+    return Math.max(0, (endTime - Date.now()) / 1000);
+  };
+
+  const [, forceUpdate] = useState();
+  //Update timer
+  useEffect(() => {
+    if(gameState.player.effects.size.endTime) {
+      const timer = setInterval(() => {
+        forceUpdate({});
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [gameState.player.effects.size.endTime]);
+
   if (!currentScene) return null;
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-xl p-8 animate-fade-in">
+      {/* Effect Status Bar */}
+      {gameState.player.effects.size.type && (
+        <div className="mb-4 flex justify-end">
+          <StatusEffect 
+            type={gameState.player.effects.size.type}
+            timeLeft={calculateTimeLeft(gameState.player.effects.size.endTime)}
+          />
+        </div>
+      )}
       {/* Scene Title */}
       <h2 className="text-3xl font-bold text-wonderland-primary mb-4">
         {currentScene.title}

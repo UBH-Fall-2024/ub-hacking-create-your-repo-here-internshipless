@@ -1,7 +1,8 @@
 import React from 'react';
 import { X } from 'lucide-react';
 
-function ItemNotification({ item, onClose, id }) {  // 添加 id 参数
+function ItemNotification({ item, onClose, id }) {
+  console.log('ItemNotification render', item);
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 
                     bg-purple-600 text-white 
@@ -15,7 +16,7 @@ function ItemNotification({ item, onClose, id }) {  // 添加 id 参数
       </div>
       <button 
         type="button"
-        onClick={() => onClose(id)}  // 直接调用 onClose 并传递 id
+        onClick={() => onClose(id)} 
         className="ml-auto p-2 hover:bg-purple-700 rounded-full
                    transition-colors duration-200"
       >

@@ -22,6 +22,7 @@ export const ACTIONS = {
   SPEND_GOLD: 'SPEND_GOLD',
   ADD_NOTIFICATION: 'ADD_NOTIFICATION',
   REMOVE_NOTIFICATION: 'REMOVE_NOTIFICATION',
+  SET_EFFECT: 'SET_EFFECT'
 };
 
 // Game reducer
@@ -199,6 +200,21 @@ function gameReducer(state, action) {
                 notification => notification.id !== action.payload.id
               )
           };
+
+          case ACTIONS.SET_EFFECT:
+            return {
+              ...state,
+              player: {
+                ...state.player,
+                effects: {
+                  ...state.player.effects,
+                  [action.payload.effectName]: {
+                    type: action.payload.effectType,
+                    endTime: action.payload.endTime
+                  }
+                }
+              }
+            };
         
     default:
       return state;

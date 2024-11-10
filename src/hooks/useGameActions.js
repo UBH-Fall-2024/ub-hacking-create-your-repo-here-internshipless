@@ -26,6 +26,7 @@ export function useGameActions() {
   }, [dispatch]);
 
   const addItem = useCallback((itemId) => {
+    console.log('Adding item:', itemId);
     if (!items[itemId]) {
       console.error(`Item ${itemId} not found`);
       return;
@@ -53,10 +54,49 @@ export function useGameActions() {
   }, [dispatch]);
 
   const useItem = useCallback((itemId) => {
+    const item = items[itemId];
+    if (!item) return;
+  
     dispatch({
       type: ACTIONS.USE_ITEM,
       payload: { itemId }
     });
+    //random size effect
+    if (item.effects?.random && item.effects.type === 'size') {
+      const isGrowing = Math.random() > 0.5;
+      const effectType = isGrowing ? 'grow' : 'shrink';
+      const duration = 30; // 30 秒
+      const endTime = Date.now() + (duration * 1000);
+  
+      dispatch({
+        type: ACTIONS.SET_EFFECT,
+        payload: {
+          effectName: 'size',
+          effectType,
+          endTime
+        }
+      });
+      // Add effect notification
+      dispatch({
+        type: ACTIONS.ADD_NOTIFICATION,
+        payload: {
+          effectName: 'size',
+          effectType,
+          endTime
+        }
+      });
+      // Remove effect after duration
+      setTimeout(() => {
+        dispatch({
+          type: ACTIONS.SET_EFFECT,
+          payload: { 
+            effectName: 'size',
+            effectType: null,
+            endTime: null
+          }
+        });
+      }, duration * 1000);
+    }
   }, [dispatch]);
 
   const removeItem = useCallback((itemId) => {

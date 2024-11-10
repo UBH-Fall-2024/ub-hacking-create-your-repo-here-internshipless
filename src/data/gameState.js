@@ -6,6 +6,12 @@ export const initialGameState = {
       skills: [],
       achievements: [],
       gold: 0,
+      effects:{
+        size:{
+          type:null,
+          endTime:null
+        }
+      }
     },
     
     gameProgress: {
