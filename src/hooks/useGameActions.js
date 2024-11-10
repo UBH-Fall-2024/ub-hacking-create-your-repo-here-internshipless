@@ -50,12 +50,27 @@ export function useGameActions() {
     });
   }, [dispatch]);
 
+  const useItem = useCallback((itemId) => {
+    dispatch({
+      type: ACTIONS.USE_ITEM,
+      payload: { itemId }
+    });
+  }, [dispatch]);
+
+  const removeItem = useCallback((itemId) => {
+    dispatch({
+      type: ACTIONS.REMOVE_ITEM,
+      payload: { itemId }
+    });
+  }, [dispatch]);
 
   return {
     startGame,
     changeScene,
     addItem,
     updateHealth,
-    localGameState
+    localGameState,
+    useItem,
+    removeItem
   };
 }

@@ -1,14 +1,46 @@
 import React, { useState } from 'react';
 import { useGameState } from '../../context/GameContext';
+import { useGameActions } from '../../hooks/useGameActions';
 import { items } from '../../data/items';
-import { Package } from 'lucide-react';
+import { Package, X } from 'lucide-react';
+import { Button } from '../ui/Button';
+
+const EffectToast = ({ message, onClose }) => (
+    <div className="fixed bottom-4 right-4 bg-purple-600 text-white px-4 py-2 
+                    rounded-lg shadow-lg animate-fade-in flex items-center gap-2">
+      <span>{message}</span>
+      <button onClick={onClose} className="hover:opacity-80">
+        <X size={16} />
+      </button>
+    </div>
+  );
 
 function InventoryBar() {
   const { player } = useGameState();
+  const { useItem, removeItem } = useGameActions();
   const [selectedItem, setSelectedItem] = useState(null);
+  const [effectMessage, setEffectMessage] = useState(null);
 
   const handleItemClick = (itemId) => {
     setSelectedItem(itemId === selectedItem ? null : itemId);
+  };
+
+  const handleUseItem = (itemId) => {
+    const item = items[itemId];
+    if (!item) return;
+
+    useItem(itemId);
+
+    // display effect message
+    let message = `Used ${item.name}`;
+    if (item.effects?.health) {
+      message += ` (Health ${item.effects.health > 0 ? '+' : ''}${item.effects.health})`;
+    }
+    setEffectMessage(message);
+
+    // close item details
+    setSelectedItem(null);
+    setTimeout(() => setEffectMessage(null), 3000);
   };
 
   return (
@@ -51,22 +83,45 @@ function InventoryBar() {
                     </div>
                   </div>
 
-                  {/* Item Details (shown when selected) */}
+                  {/* Item Details */}
                   {isSelected && (
                     <div className="absolute left-0 top-full mt-2 p-4 
                                   bg-white rounded-lg shadow-xl z-10
-                                  w-48 text-sm">
+                                  w-64 text-sm">
                       <h4 className="font-bold text-purple-800 mb-2">
                         {item.name}
                       </h4>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 mb-4">
                         {item.description}
                       </p>
-                      {item.usable && (
-                        <div className="mt-2 text-purple-600 text-xs">
-                          Click to use
+                      {/* Effects info */}
+                      {item.effects && (
+                        <div className="mb-4 text-sm">
+                          <div className="font-medium text-purple-700">Effects:</div>
+                          <ul className="list-disc list-inside text-gray-600">
+                            {item.effects.health && (
+                              <li>Health: {item.effects.health > 0 ? '+' : ''}{item.effects.health}</li>
+                            )}
+                            {item.effects.skills && (
+                              <li>Skills: {item.effects.skills.join(', ')}</li>
+                            )}
+                          </ul>
                         </div>
                       )}
+                      {/* Action buttons */}
+                      <div className="flex gap-2">
+                        {item.usable && (
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleUseItem(itemId);
+                            }}
+                            className="flex-1 bg-purple-600 hover:bg-purple-700"
+                          >
+                            Use
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -75,6 +130,14 @@ function InventoryBar() {
           </div>
         )}
       </div>
+
+      {/* Effect Toast */}
+      {effectMessage && (
+        <EffectToast 
+          message={effectMessage} 
+          onClose={() => setEffectMessage(null)} 
+        />
+      )}
     </div>
   );
 }

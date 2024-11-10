@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import { initialGameState } from '../data/gameState';
+import { items } from '../data/items';
 
 // Create context
 const GameContext = createContext(null);
@@ -11,6 +12,7 @@ export const ACTIONS = {
   CHANGE_SCENE: 'CHANGE_SCENE',
   ADD_ITEM: 'ADD_ITEM',
   USE_ITEM: 'USE_ITEM',
+  REMOVE_ITEM: 'REMOVE_ITEM',
   UPDATE_HEALTH: 'UPDATE_HEALTH',
   UNLOCK_ACHIEVEMENT: 'UNLOCK_ACHIEVEMENT',
   ADD_SKILL: 'ADD_SKILL',
@@ -56,15 +58,6 @@ function gameReducer(state, action) {
         }
       };
 
-    case ACTIONS.USE_ITEM:
-      return {
-        ...state,
-        player: {
-          ...state.player,
-          inventory: state.player.inventory.filter(id => id !== action.payload.itemId)
-        }
-      };
-
     case ACTIONS.UPDATE_HEALTH:
       const newHealth = Math.max(0, Math.min(100, state.player.health + action.payload.amount));
       return {
@@ -89,6 +82,52 @@ function gameReducer(state, action) {
           lastLoaded: Date.now()
         }
       };
+
+      case ACTIONS.USE_ITEM: {
+        const item = items[action.payload.itemId];
+        if (!item) return state;
+  
+        // 应用物品效果
+        const newState = { ...state };
+        
+        if (item.effects) {
+          // 处理生命值效果
+          if (item.effects.health) {
+            newState.player.health = Math.min(
+              100,
+              Math.max(0, state.player.health + item.effects.health)
+            );
+          }
+          
+          // 处理技能效果
+          if (item.effects.skills) {
+            newState.player.skills = [
+              ...new Set([...state.player.skills, ...item.effects.skills])
+            ];
+          }
+        }
+  
+        // 如果物品是消耗品，使用后移除
+        if (item.consumable) {
+          newState.player.inventory = state.player.inventory.filter(
+            id => id !== action.payload.itemId
+          );
+        }
+  
+        return newState;
+      }
+  
+      case ACTIONS.REMOVE_ITEM:
+        return {
+          ...state,
+          player: {
+            ...state.player,
+            inventory: state.player.inventory.filter(
+              id => id !== action.payload.itemId
+            )
+          }
+        };
+
     default:
       return state;
   }

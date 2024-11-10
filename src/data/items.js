@@ -4,19 +4,19 @@ export const items = {
             id: 'pocket_watch',
             name: "White Rabbit's Pocket Watch",
             description: 'A golden pocket watch with the hands running backwards.',
-            type: 'tool',
-            effects: {
-                time_control: true,
-                value: 10
-            },
-            usable: true,
+            type: 'key_item',
+            icon: '⌚',
+            usable: false,
             consumable: false
         },
         magic_book: {
             id: 'magic_book',
             name: 'Magic Book',
-            description: 'A magical book that seems to enable you to understand the language of the Wonderland.',
+            description: 'An ancient book containing magical knowledge.',
             type: 'knowledge',
+            usable: true,
+            consumable: true,
+            icon : '📚',
             effects: {
                 language_skill: 15,
                 wisdom: 5
