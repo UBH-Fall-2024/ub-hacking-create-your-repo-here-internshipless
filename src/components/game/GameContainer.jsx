@@ -14,6 +14,7 @@ import { Trophy } from 'lucide-react';
 import AchievementsPanel from './AchievementsPanel';
 import { Store } from 'lucide-react';
 import Shop from './shop';
+import { Package } from 'lucide-react';
 
 const ConfirmDialog = ({ message, onConfirm, onCancel }) => (
   <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50
@@ -49,6 +50,8 @@ function GameContainer() {
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
   const [showShop, setShowShop] = useState(false);
+  const [showInventory, setShowInventory] = useState(false);
+
 
   const handleSaveAndExit = () => {
     setShowSaveMenu(true);
@@ -133,6 +136,16 @@ function GameContainer() {
       <div className={`transition-all duration-500 
                     ${isDead ? 'opacity-50 pointer-events-none blur-sm' : ''}`}>
         <div className="flex justify-end gap-2 mb-4">
+          {/* Inventory button */}
+        <Button
+          onClick={() => setShowInventory(true)}
+          className="bg-purple-600 hover:bg-purple-700 transition-all
+                    shadow-lg hover:shadow-xl"
+          title="Inventory"
+        >
+          <Package className="h-5 w-5" />
+        </Button>
+        {/* Shop button */}
         <Button
           onClick={() => setShowShop(true)}
           className="bg-yellow-500 hover:bg-yellow-600 transition-all
@@ -141,7 +154,7 @@ function GameContainer() {
         >
           <Store className="h-5 w-5" />
         </Button>
-
+          {/* Save/Load button */}
           <Button
             onClick={() => setShowSaveMenu(true)}
             className="bg-purple-600 hover:bg-purple-700 transition-all
@@ -150,7 +163,7 @@ function GameContainer() {
           >
             <Save className="h-5 w-5" />
           </Button>
-
+          {/* Exit button */}
           <Button
             onClick={handleExitClick}
             className="bg-red-500 hover:bg-red-600 transition-all
@@ -159,7 +172,7 @@ function GameContainer() {
           >
             <Home className="h-5 w-5" />
           </Button>
-
+          {/* Achievements button */}
           <Button
             onClick={() => setShowAchievements(true)}
             className="bg-yellow-500 hover:bg-yellow-600 transition-all
@@ -178,10 +191,13 @@ function GameContainer() {
         )}
         <StatusBar />
 
+        {showInventory && (
+          <InventoryBar onClose={() => setShowInventory(false)} />
+        )}
+
         <div className="mt-4">
           <Scene />
         </div>
-        <InventoryBar />
       </div>
     </div>
   );

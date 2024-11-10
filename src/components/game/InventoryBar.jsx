@@ -15,9 +15,9 @@ const EffectToast = ({ message, onClose }) => (
     </div>
   );
 
-function InventoryBar() {
+function InventoryBar({ onClose }) {
   const { player } = useGameState();
-  const { useItem, removeItem } = useGameActions();
+  const { useItem } = useGameActions();
   const [selectedItem, setSelectedItem] = useState(null);
   const [effectMessage, setEffectMessage] = useState(null);
 
@@ -48,17 +48,28 @@ function InventoryBar() {
     amount: player.inventory[itemId],
     ...items[itemId]
   }));
+  
 
   
   return (
-    <div className="mt-4">
-      {/* Inventory Header */}
-      <div className="flex items-center gap-2 mb-2">
-        <Package className="w-5 h-5 text-purple-500" />
-        <h3 className="text-lg font-medium text-purple-800">
-          Inventory ({player.inventory.length})
-        </h3>
-      </div>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50
+                    flex items-center justify-center animate-fade-in">
+      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 p-6">
+        {/* 替换原来的 Header */}
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-2">
+            <Package className="w-5 h-5 text-purple-500" />
+            <h3 className="text-lg font-medium text-purple-800">
+              Inventory ({inventoryItems.length})
+            </h3>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
 
       {/* Inventory Grid */}
       <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-4">
@@ -151,6 +162,7 @@ function InventoryBar() {
           onClose={() => setEffectMessage(null)} 
         />
       )}
+      </div>
     </div>
   );
 }
