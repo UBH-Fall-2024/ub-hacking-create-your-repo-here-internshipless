@@ -17,7 +17,6 @@ import Shop from './shop';
 import { Package } from 'lucide-react';
 import ItemNotification from './ItemNotification';
 import { items } from '../../data/items';
-import { useAchievements } from '../../hooks/useAchievements';
 
 const ConfirmDialog = ({ message, onConfirm, onCancel }) => (
   <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50
